@@ -1,8 +1,9 @@
 const axios = require('axios');
 
 const getGameDetail = async (idVideogame) => {
-  //NO DB - JUST API
+  //NOT DB YET
   try {
+    //API
     const url = `https://api.rawg.io/api/games/${idVideogame}?key=38438bb839ec48ddae76cec99f9c8104`;
     const apiGame = await axios(url);
     if (Object.keys(apiGame.data).length !== 0) {

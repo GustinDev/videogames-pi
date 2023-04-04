@@ -3,9 +3,12 @@
 //RAW: https://api.rawg.io/api/games?key=38438bb839ec48ddae76cec99f9c8104&page=1
 
 const axios = require('axios');
+const { Videogame, Genre } = require('../db');
+
+//API + DB WORKING
 
 const getVideogames = async () => {
-  //NO DB - JUST API
+  //GAMES: API
   const url = `https://api.rawg.io/api/games?key=38438bb839ec48ddae76cec99f9c8104&page=`;
   let apiGames = [];
   let page = 1;
@@ -27,68 +30,26 @@ const getVideogames = async () => {
     };
   });
 
-  return apiGames;
+  //return apiGames;
+
+  //GAMES: DB
+
+  const dbGames = await Videogame.findAll({
+    include: {
+      model: Genre,
+      attributes: ['name'],
+      through: {
+        attributes: [],
+      },
+    },
+  });
+
+  //ALL GAMES (DB + API):
+
+  const allGames = [...apiGames, ...dbGames];
+  return allGames;
 };
 
 module.exports = {
   getVideogames,
 };
-
-//Intento 1:
-
-// const { Videogame } = require('../db');
-// const axios = require('axios');
-
-// const getApiData = async () => {
-//   try {
-//     let allGames = [];
-
-//     for (let i = 1; i < array.length; i++) {
-//       let games = await axios.get(
-//         `https://api.rawg.io/api/games?key=38438bb839ec48ddae76cec99f9c8104&page=${i}`
-//       );
-//       const allVideogames = games.data.results;
-//       allGames = [...allGames, allVideogames];
-//       i++;
-//     }
-
-//     //Especificamos los datos.
-
-//     const datos = await allGames?.map((response) => {
-//       const { id, name, backgound_image, rating, description, released } =
-//         response;
-//       const ratings = response.ratings?.map((allRating) => allRating.title);
-//       const platforms = response.plaforms?.map(
-//         (allPlataform) => allPlataform.plaform.name
-//       );
-//       const genres = response.genres?.map((allGenres) => allGenres.name);
-//       return {
-//         id,
-//         name,
-//         backgound_image,
-//         rating,
-//         description,
-//         released,
-//         ratings,
-//         platforms,
-//         genres,
-//       };
-//     });
-//     return datos;
-//   } catch (error) {
-//     return { error: error.message };
-//   }
-// };
-
-// const saveApiData = async () => {
-//   try {
-//     const allVideogames = await getApiData();
-//     await Videogame.bulkCreate(allVideogames);
-//   } catch (error) {
-//     return { error: error.message };
-//   }
-// };
-
-// module.exports = {
-//   saveApiData,
-// };
