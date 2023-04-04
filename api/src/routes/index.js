@@ -2,12 +2,12 @@ const { Router } = require('express');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 const router = Router();
-// const getAllGames = require('../controllers/getAllGames');
 
 const { getVideogames } = require('../controllers/getVideogames.js');
 
-//GET - ALL
+const { getGameDetail } = require('../controllers/getGameDetail.js');
 
+//GET - ALL
 router.get('/videogames', async (req, res) => {
   try {
     const response = await getVideogames();
@@ -17,16 +17,16 @@ router.get('/videogames', async (req, res) => {
   }
 });
 
-// router.get('/all', async (req, res) => {
-//   try {
-//     const allVideogames = await getAllGames();
-//     return res.status(200).json(allVideogames);
-//   } catch (error) {
-//     return res.status(400).send('Hubo un problema...');
-//   }
-// });
+//GET DETAIL
 
-// Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
+router.get('/videogames/:idVideogame', async (req, res) => {
+  const { idVideogame } = req.params;
+  try {
+    const gameDetail = await getGameDetail(idVideogame);
+    return res.status(200).json(gameDetail);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+});
 
 module.exports = router;

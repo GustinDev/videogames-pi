@@ -1,12 +1,11 @@
 //https://api.rawg.io/api/games?key=${API_KEY}&page_size=100);
 
-//RAW: https://api.rawg.io/api/games?key=38438bb839ec48ddae76cec99f9c8104&page_size=100
-
 //RAW: https://api.rawg.io/api/games?key=38438bb839ec48ddae76cec99f9c8104&page=1
 
 const axios = require('axios');
 
 const getVideogames = async () => {
+  //NO DB - JUST API
   const url = `https://api.rawg.io/api/games?key=38438bb839ec48ddae76cec99f9c8104&page=`;
   let apiGames = [];
   let page = 1;

@@ -4,7 +4,7 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   // defino el modelo
   //No es necesario ir a details, ¿pero deberia ir a results?
-  sequelize.define('genre', {
+  sequelize.define('Genre', {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
